@@ -1,0 +1,2 @@
+class BaseSpline:
+    pass
