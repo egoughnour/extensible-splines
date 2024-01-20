@@ -43,6 +43,11 @@ class Interpolant:
         if theta != 0.0:
             self.centroid = Centroid(points)
 
+    @property
+    def rotation_angle(self) -> float:
+        """angle to rotate the points interpolated. default implemntation does not rotate."""
+        return 0.0
+
 class Centroid:
     def __init__(self, point_cloud: List[Tuple[float]]) -> None:
         self.points = [complex(x,y) for x,y in point_cloud]
