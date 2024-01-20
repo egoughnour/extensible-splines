@@ -1,5 +1,5 @@
 import numpy as np
-from .base_spline import BaseSpline
+from .spline_kinds import BaseSpline
 from typing import List, Tuple
 
 #polynomial terms
