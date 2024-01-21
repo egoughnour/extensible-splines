@@ -11,3 +11,7 @@ Python Spline Interpolation. Interactive plot for quick testing of new spline ke
 ````
 pip install extensible-splines
 ````
+
+# Usage
+
+![bspline_usage](https://github.com/egoughnour/extensible-splines/assets/457471/4e9676a4-6c33-4a98-889e-93bc47dae9cc)
