@@ -33,3 +33,6 @@ class TestDerivedSplineProperties(unittest.TestCase):
         transformed_points = h_spline.transform_control_points(control_points)
         # check that the elementwise difference between the transformed points and the expected transformed points is small, namely, a zero matrix
         assert np.allclose(transformed_points, expected_transformed_points)
+
+if __name__ == '__main__':
+    unittest.main()
