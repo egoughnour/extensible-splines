@@ -25,7 +25,7 @@ class Interpolant:
     
     def evaluate_on_kth_segment(self, k:int, tfrs: list[float]) -> List[Tuple[float]]:
         """
-        Evaluate tfrs, the fractional parts travesed on the interval [0,1] projected onto segment k.
+        Evaluate tfrs, the fractional parts traversed on the interval [0,1] projected onto segment k.
         """
         return [get_elements((t**powers) @ self.spline.segments[k]) for t in tfrs]
     
