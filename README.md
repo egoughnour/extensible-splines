@@ -17,7 +17,7 @@ pip install extensible-splines
 ![bspline_usage](https://github.com/egoughnour/extensible-splines/assets/457471/4e9676a4-6c33-4a98-889e-93bc47dae9cc)
 
 ### Create an instance of `SplineMatrix`
-For instance:
+For example:
 
 ````
 my_kernel = SplineMatrix(np.array([[1, 0, 0, 0],[0, 1, 0, 0],[-3, -2, 3, -1],[2, 1, -2, 1]],float))
