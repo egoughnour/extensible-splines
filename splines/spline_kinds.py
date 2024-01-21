@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod  
 from dataclasses import dataclass, field
-from typing_extensions import override
 import numpy as np
 from itertools import islice, tee
 from typing import Dict, Iterable, List, Tuple
@@ -59,11 +58,9 @@ class HermiteSpline(BaseSpline):
     def __init__(self) -> None:
         super().__init__(HSM)
 
-    @override
     def filter_segments(self, raw_segments: Iterable[Tuple[Tuple[int, int]]]):
         return super().filter_segments(raw_segments)
 
-    @override
     def transform_control_points(self, points:Tuple[Tuple[int,int]]) -> np.ndarray:
         transformed = (points[0], (points[1][0]-points[0][0],points[1][1]-points[0][1]), points[2], (points[3][0]-points[2][0],points[3][1]-points[2][1])) 
         return np.vstack(transformed, dtype=float)
@@ -72,11 +69,9 @@ class BSpline(BaseSpline):
     def __init__(self) -> None:
         super().__init__(BSM)
     
-    @override
     def filter_segments(self, raw_segments: Iterable[Tuple[Tuple[int, int]]]):
         return super().filter_segments(raw_segments)
 
-    @override
     def transform_control_points(self, points: Tuple[Tuple[int, int]]) -> np.ndarray:
         return super().transform_control_points(points)
 
@@ -84,12 +79,10 @@ class BezierSpline(BaseSpline):
     def __init__(self) -> None:
         super().__init__(BezM)
     
-    @override
     def filter_segments(self, raw_segments: Iterable[Tuple[Tuple[int, int]]]):
         whole_list = list(raw_segments)
         return list(whole_list[0::3])
 
-    @override
     def transform_control_points(self, points: Tuple[Tuple[int, int]]) -> np.ndarray:
         return super().transform_control_points(points)
 
@@ -97,7 +90,6 @@ class QuadraticBezierSpline(BaseSpline):
     def __init__(self) -> None:
         super().__init__(QuadBezM)
 
-    @override
     def filter_segments(self, raw_segments: Iterable[Tuple[Tuple[int, int]]]):
         whole_list = list(raw_segments)
         # should be able to use same logic as cubic implementation, maybe
@@ -106,7 +98,6 @@ class QuadraticBezierSpline(BaseSpline):
         # TODO verify this is workable with this implementation
         return list(whole_list[0::3])
     
-    @override
     def transform_control_points(self, points: Tuple[Tuple[int, int]]) -> np.ndarray:
         return super().transform_control_points(points)
 
@@ -115,10 +106,8 @@ class CatmullRomSpline(BaseSpline):
     def __init__(self) -> None:
         super().__init__(CatRomM)
     
-    @override
     def filter_segments(self, raw_segments: Iterable[Tuple[Tuple[int, int]]]):
         return super().filter_segments(raw_segments)
 
-    @override
     def transform_control_points(self, points: Tuple[Tuple[int, int]]) -> np.ndarray:
         return super().transform_control_points(points)
