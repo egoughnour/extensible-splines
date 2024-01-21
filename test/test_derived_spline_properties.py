@@ -10,7 +10,7 @@ import extensible_splines.splines
 
 class TestDerivedSplineProperties(unittest.TestCase):
 
-    def test_hermite_splines():
+    def test_hermite_splines(self):
         # create a spline
         h_spline = extensible_splines.splines.HermiteSpline()
 
@@ -32,7 +32,7 @@ class TestDerivedSplineProperties(unittest.TestCase):
 
         transformed_points = h_spline.transform_control_points(control_points)
         # check that the elementwise difference between the transformed points and the expected transformed points is small, namely, a zero matrix
-        assert np.allclose(transformed_points, expected_transformed_points)
+        self.assertTrue(np.allclose(transformed_points, expected_transformed_points), msg="The transformed points are not correct.")
 
 if __name__ == '__main__':
     unittest.main()
