@@ -49,14 +49,12 @@ class SplineEditor(Generic[SplineType]):
     
     def remove_knot(self, x, _):
         if x in self.points:
-            #TODO check del versus pop()?
             del self.points[x]
             self.interpolant.spline.set_control_points(self.points)
 
     def on_click(self, event):
         #check that we have left click and are in the axes
-        #TODO check equality works here instead?
-        if event.button == 1 and event.inaxes in [self.axes]:
+        if event.button == 1 and event.inaxes == self.axes:
             point = self.get_nearest_point(event)
             if point:
                 # we found a point so we're moving it
@@ -64,7 +62,7 @@ class SplineEditor(Generic[SplineType]):
             else:
                 self.add_knot(event)
             self.update_graph()
-        elif event.button == 3 and event.inaxes in [self.axes]:
+        elif event.button == 3 and event.inaxes == self.axes:
             point = self.get_nearest_point(event)
             if point:
                 self.remove_knot(*point)
@@ -107,7 +105,7 @@ class SplineEditor(Generic[SplineType]):
         self.update_graph()
 
     def on_release(self, event):
-        if event.button == 1 and event.inaxes in [self.axes] and self.knot_moving:
+        if event.button == 1 and event.inaxes == self.axes and self.knot_moving:
             self.knot_moving = None
             self.update_graph()
 
