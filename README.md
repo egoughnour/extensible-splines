@@ -6,6 +6,15 @@
 
 Python Spline Interpolation. Interactive plot for quick testing of new spline kernels or control point usage.  
 
+## Why?
+
+If you look at the source of `spline_kinds.py` you will notice that the most commonly used varieties of spline can be defined with only one or two of four possible overloads or attribute definitions relative to the base class.
+
+1. The kernel itself. That is, the square matrix by which we will multiply the powers of the parameter--in the form of a vector.
+2. The scaling factor.  This defaults to 1.0, but supplying a value on the open unit interval is fine.
+3. Any filter on the segments themselves.
+4. How to transform the knots. In the case of the Hermite spline, this is p0, (δx,δy), p2, (δx,δy).  Points p0 and p2 are unchanged, but p1 and p3 are tranformed to relative offsets from p0 and p2, respectively.
+
 # Installation
 
 ````
