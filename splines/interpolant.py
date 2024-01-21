@@ -42,6 +42,9 @@ class Interpolant:
                 points += self.evaluate_on_kth_segment(k, correct_sample_ends(sample_points))    
         if theta != 0.0:
             self.centroid = Centroid(points)
+            self.centroid.rotate(theta)
+            return self.centroid.as_tuple_list()
+        return points
 
     @property
     def rotation_angle(self) -> float:
