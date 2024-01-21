@@ -6,7 +6,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setup(
     name='extensible_splines',
-    version='0.0.1',
+    version='0.1.1',
     packages=['extensible_splines'],
     url='https://github.com/egoughnour/extensible-splines',
     license='MIT',
