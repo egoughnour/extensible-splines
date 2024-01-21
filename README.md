@@ -5,3 +5,9 @@
 [![codecov](https://codecov.io/gh/egoughnour/extensible-splines/graph/badge.svg?token=MELC9EGTYU)](https://codecov.io/gh/egoughnour/extensible-splines)
 
 Python Spline Interpolation. Interactive plot for quick testing of new spline kernels or control point usage.  
+
+# Installation
+
+````
+pip install extensible-splines
+````
