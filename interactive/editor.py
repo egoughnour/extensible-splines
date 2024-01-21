@@ -121,6 +121,6 @@ class SplineEditor(Generic[SplineType]):
             if dist < min_distance_found:
                 min_distance_found = dist
                 nearest_point = (x,y)
-        if dist < self.click_epsilon_dist:
+        if min_distance_found <= self.click_epsilon_dist:
             return nearest_point
         return None
