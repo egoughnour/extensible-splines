@@ -18,15 +18,15 @@ def test_hermite_splines():
     #  transformed:   (2,3), (5,16), (31,61), (36, 26)      
     #  diffs: (N.B., not many collisions)
     # -------------------------------------------- 
-    #  (1,5,17,29,59,65,87)
-    #  (4,16,28,58,64,86)
+    #  (1,**5***,17,29,59,65,87)
+    #  (4,**16**,28,58,64,86)
     #  (12,24,54,60,82)
     #  (12,42,48,70)
-    #  (30,36,58)
-    #  (6,28)
+    #  (30,**36**,58)
+    #  (6, **28**)
     #  (22)
     control_points = ((2,3), (7,19), (31,61), (67, 89) )
-    expected_transformed_points = np.vstack(((2,3), (5,16), (31,61), (36, 26) ), dtype=float)
+    expected_transformed_points = np.vstack(((2,3), (5,16), (31,61), (36, 28) ), dtype=float)
 
     transformed_points = h_spline.transform_control_points(control_points)
     # check that the elementwise difference between the transformed points and the expected transformed points is small, namely, a zero matrix
