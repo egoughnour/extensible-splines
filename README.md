@@ -8,7 +8,7 @@ Python Spline Interpolation. Interactive plot for quick testing of new spline ke
 
 ## Why?
 
-If you look at the source of `spline_kinds.py` you will notice that the most commonly used varieties of spline can be defined with only one or two of four possible overloads or attribute definitions relative to the base class.
+If you look at the source of `extensible_splines/splines.py` you will notice that the most commonly used varieties of spline can be defined with only one or two of four possible overloads or attribute definitions relative to the base class.
 
 1. The kernel itself. That is, the square matrix by which we will multiply the powers of the parameter--in the form of a vector.
 2. The scaling factor.  This defaults to 1.0, but supplying a value on the open unit interval is fine.
@@ -52,9 +52,6 @@ Notice that other than super() calls and type hinting, the kernel is the only as
 ### Test the New Spline Interactively
 
 ````
-import splines
-import interactive
-
 # Kernel instance and Spline class go here
 # ....
 ##
