@@ -19,14 +19,16 @@ PATH_TAG = '<path xmlns="http://www.w3.org/2000/svg" id="Selection" fill="none" 
 class TestNetConstruction(unittest.TestCase):
     def test_net_construction(self):
         net_without_tabs = extensible_splines.splines.TablessNet(PATH_TAG, 10)
-        points = RAW_POLYGON.split(" L ")
-        self.assertEqual(points[0], points[-1], msg="Path Not Closed. Over a closed path we assume first and last points are the same.")
-        point_count = len(points) - 1 # we reduce the multiplicity of the first and last point, as they are the same as the first and last point of the path.
+        text_lines = RAW_POLYGON.split(" L ")
+        self.assertEqual(text_lines[0], text_lines[-1], msg="Path Not Closed. Over a closed path we assume first and last points are the same.")
+        # anything delimited by an 'L' is a line segment
+        # thus, in a triangle, for instance, we expect 2 L's, 3 line segments, 3 points.
+        path_element_count = len(text_lines)
 
-        print(f"points in the original path: {point_count}")
-        print(f"boxes in the next: {len(net_without_tabs.boxes)}")
+        print(f"path elements in the original path: {path_element_count}")
+        print(f"boxes in the net {len(net_without_tabs.boxes)}")
 
-        self.assertEqual(point_count, len(net_without_tabs.boxes))
+        self.assertEqual(path_element_count, len(net_without_tabs.boxes))
         
         print("Dumping the generated paths:")
         print(str(net_without_tabs))

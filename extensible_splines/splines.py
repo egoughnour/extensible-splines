@@ -324,7 +324,6 @@ class LineSegment:
     length: float = None
     angle: float = None
     def __post_init__(self):
-        self.start.phase
         self.length =  abs(self.end - self.start)
         self.angle = cmath.phase(self.end-self.start)
 
