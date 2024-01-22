@@ -52,15 +52,24 @@ Notice that other than super() calls and type hinting, the kernel is the only as
 ### Test the New Spline Interactively
 
 ````
-# Kernel instance and Spline class go here
-# ....
-##
+from extensible_splines.splines import SplineEditor, SplineMatrix, BaseSpline
+import numpy as np
+from typing import Iterable, Tuple
 
+my_kernel = SplineMatrix(np.array([[1, 0, 0, 0],[0, 1, 0, 0],[-3, -2, 3, -1],[2, 1, -2, 1]],float))
+class MySpline(BaseSpline):
+    def __init__(self) -> None:
+        super().__init__(my_kernel)
+    
+    def filter_segments(self, raw_segments: Iterable[Tuple[Tuple[int, int]]]):
+        return super().filter_segments(raw_segments)
+
+    def transform_control_points(self, points: Tuple[Tuple[int, int]]) -> np.ndarray:
+        return super().transform_control_points(points)
 def main():
-    editor = interactive.SplineEditor(MySpline())
-    editor.init_figure(caption='Testing New Splines')
+    editor = SplineEditor(MySpline())
+    editor.init_figure("Any caption will work")
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 ````
