@@ -339,18 +339,18 @@ class LineSegment:
     def as_svg_fragment(self, initial=False):
         if initial:
             return f"{self.start.real} {self.start.imag} L {self.end.real} {self.end.imag}"
-        return f"{self.end.real} {self.end.imag}"
+        return f"L {self.end.real} {self.end.imag}"
 
 class Box:
     def __init__(self, line: LineSegment, width, id) -> None:
         self.path_element = line
         self.parallel: LineSegment = (line + width).reverse()
-        self.start_edge = LineSegment(self.parallel.start, self.path_element.start)
-        self.end_edge = LineSegment(self.path_element.end, self.parallel.end)
+        self.fourth_edge = LineSegment(self.parallel.end, self.path_element.start)
+        self.second_edge = LineSegment(self.path_element.end, self.parallel.start)
         self.id = id
     #TODO handle tabs
     def as_svg_path(self):
-        return f"{PATH_CRUFT_START}{self.id}{PATH_CRUFT_MIDDLE}{self.start_edge.as_svg_fragment(initial=True)} {self.path_element.as_svg_fragment()} {self.end_edge.as_svg_fragment()} {self.parallel.as_svg_fragment()} {PATH_CRUFT_END}"
+        return f"{PATH_CRUFT_START}{self.id}{PATH_CRUFT_MIDDLE} {self.path_element.as_svg_fragment(initial=True)} {self.second_edge.as_svg_fragment()} {self.parallel.as_svg_fragment()} {self.fourth_edge.as_svg_fragment()}{PATH_CRUFT_END}"
 
 class TablessNet:
     """
