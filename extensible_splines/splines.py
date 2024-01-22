@@ -342,7 +342,7 @@ class LineSegment:
         self.angle = cmath.phase(self.end-self.start)
 
     def __add__(self, other):
-        normal = np.exp(1j*((math.pi/2.0)+self.angle))
+        normal =-1.0*np.exp(1j*((math.pi/2.0)+self.angle))
         if isinstance(other, int) or isinstance(other, float):
             return LineSegment(self.start+other*normal, self.end+other*normal)
         raise TypeError(f"unsupported operand type(s) for +: 'LineSegment' and '{type(other)}'")
