@@ -181,6 +181,20 @@ class Centroid:
     def as_tuple_list(self) -> List[Tuple[float]]:
         return [(w.real, w.imag) for w in self.transformed]
 
+
+def signed_area_by_triangulation(points:List[complex]) -> float:
+    """
+    Signed area of a point cloud by triangulation. Strictly we're using trapezoids, but this is equivalent.
+    """
+    if points[0] != points[-1]:
+        points.append(points[0])
+    area = 0.0
+    for i in range(len(points)-1):
+        area += (points[i+1].imag + points[i].imag)*(points[i].real - points[i+1].real)
+    return area/2.0
+
+
+
 # End of Interpolant and Centroid classes
     
 # Editor class
@@ -309,4 +323,72 @@ class SplineEditor(Generic[SplineType]):
         return None
 
 # End of Editor class
+# LineSegment class
+import cmath
+
+PATH_CRUFT_START = "<path xmlns=\"http://www.w3.org/2000/svg\" id=\""
+PATH_CRUFT_MIDDLE = "\" fill=\"none\" stroke=\"black\" stroke-width=\"1\" d=\"M "
+PATH_CRUFT_END = "\"></path>"
+PATH_PARSER_DELIMITER = " d=\"M "
+
+@dataclass
+class LineSegment:
+    start: complex
+    end: complex
+    length: float = None
+    angle: float = None
+    def __post_init__(self):
+        self.length =  abs(self.end - self.start)
+        self.angle = cmath.phase(self.end-self.start)
+
+    def __add__(self, other):
+        normal =-1.0*np.exp(1j*((math.pi/2.0)+self.angle))
+        if isinstance(other, int) or isinstance(other, float):
+            return LineSegment(self.start+other*normal, self.end+other*normal)
+        raise TypeError(f"unsupported operand type(s) for +: 'LineSegment' and '{type(other)}'")
+    
+    def reverse(self):
+        return LineSegment(self.end, self.start)
+
+    def as_svg_fragment(self, initial=False):
+        if initial:
+            return f"{self.start.real} {self.start.imag} L {self.end.real} {self.end.imag}"
+        return f"L {self.end.real} {self.end.imag}"
+
+class Box:
+    def __init__(self, line: LineSegment, width, id) -> None:
+        self.path_element = line
+        self.parallel: LineSegment = (line + width).reverse()
+        self.fourth_edge = LineSegment(self.parallel.end, self.path_element.start)
+        self.second_edge = LineSegment(self.path_element.end, self.parallel.start)
+        self.id = id
+    #TODO handle tabs
+    def as_svg_path(self):
+        return f"{PATH_CRUFT_START}{self.id}{PATH_CRUFT_MIDDLE} {self.path_element.as_svg_fragment(initial=True)} {self.second_edge.as_svg_fragment()} {self.parallel.as_svg_fragment()} {self.fourth_edge.as_svg_fragment()}{PATH_CRUFT_END}"
+
+class TablessNet:
+    """
+    This is the net corresponding to the prism we take as input.  Currently has no tabs.
+    """
+    def __init__(self, svg_path: str, prism_height, generated_path_prefix:str='box_'):
+        self.box_width = prism_height
+        self.generated_path_prefix = generated_path_prefix
+        path_guts = svg_path.split(PATH_PARSER_DELIMITER)[-1]
+        path_guts = path_guts.removesuffix(PATH_CRUFT_END)
+        if '"' in path_guts:
+            path_guts = path_guts.split('"')[0]
+        self.path = []
+        points =[complex(float(w.split()[0]),float(w.split()[-1])) for w in path_guts.split(' L ')]
+        #now we check for--and prevent (!)--mathematically negative traversal
+        area = signed_area_by_triangulation(points)
+        if area < 0:
+            points.reverse()
+        for i in range(len(points)-1):
+            self.path.append(LineSegment(points[i], points[i+1]))
+        self.boxes = [Box(line, self.box_width, generated_path_prefix+str(i)) for i, line in enumerate(self.path)]
+        self.generated_paths = [box.as_svg_path() for box in self.boxes]
+    
+    def __str__(self):
+        return '\n'.join(self.generated_paths)
+
 
