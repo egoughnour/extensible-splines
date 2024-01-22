@@ -21,9 +21,9 @@ class TestNetConstruction(unittest.TestCase):
         net_without_tabs = extensible_splines.splines.TablessNet(PATH_TAG, 10)
         text_lines = RAW_POLYGON.split(" L ")
         self.assertEqual(text_lines[0], text_lines[-1], msg="Path Not Closed. Over a closed path we assume first and last points are the same.")
-        # anything delimited by an 'L' is a line segment
-        # thus, in a triangle, for instance, we expect 2 L's, 3 line segments, 3 points.
-        path_element_count = len(text_lines)
+        #  each 'L' represents a line segment.  This is basically a Dagwood sandwich.
+        # thus, in a triangle, for instance, we expect 2 L's, 3 line segments, 3 points, but one with multiplicity 2.
+        path_element_count = len(text_lines) - 1 # we look for N-1 because, to continue the previous analogy, we are looking at fillings, not bread slices.
 
         print(f"path elements in the original path: {path_element_count}")
         print(f"boxes in the net {len(net_without_tabs.boxes)}")

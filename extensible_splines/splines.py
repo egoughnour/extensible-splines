@@ -363,7 +363,10 @@ class TablessNet:
         path_guts = path_guts.removesuffix(PATH_CRUFT_END)
         if '"' in path_guts:
             path_guts = path_guts.split('"')[0]
-        self.path = [LineSegment(*[complex(float(w)) for w in w.split()]) for w in path_guts.split(' L ')]
+        self.path = []
+        points =[complex(float(w.split()[0]),float(w.split()[-1])) for w in path_guts.split(' L ')]
+        for i in range(len(points)-1):
+            self.path.append(LineSegment(points[i], points[i+1]))
         self.boxes = [Box(line, self.box_width, generated_path_prefix+str(i)) for i, line in enumerate(self.path)]
         self.generated_paths = [box.as_svg_path() for box in self.boxes]
     
