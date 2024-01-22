@@ -181,6 +181,20 @@ class Centroid:
     def as_tuple_list(self) -> List[Tuple[float]]:
         return [(w.real, w.imag) for w in self.transformed]
 
+
+def signed_area_by_triangulation(points:List[complex]) -> float:
+    """
+    Signed area of a point cloud by triangulation. Strictly we're using trapezoids, but this is equivalent.
+    """
+    if points[0] != points[-1]:
+        points.append(points[0])
+    area = 0.0
+    for i in range(len(points)-1):
+        area += (points[i+1].imag + points[i].imag)*(points[i].real - points[i+1].real)
+    return area/2.0
+
+
+
 # End of Interpolant and Centroid classes
     
 # Editor class
@@ -365,6 +379,10 @@ class TablessNet:
             path_guts = path_guts.split('"')[0]
         self.path = []
         points =[complex(float(w.split()[0]),float(w.split()[-1])) for w in path_guts.split(' L ')]
+        #now we check for--and prevent (!)--mathematically negative traversal
+        area = signed_area_by_triangulation(points)
+        if area < 0:
+            points.reverse()
         for i in range(len(points)-1):
             self.path.append(LineSegment(points[i], points[i+1]))
         self.boxes = [Box(line, self.box_width, generated_path_prefix+str(i)) for i, line in enumerate(self.path)]

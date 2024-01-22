@@ -18,7 +18,7 @@ PATH_TAG = '<path xmlns="http://www.w3.org/2000/svg" id="Selection" fill="none" 
 
 class TestNetConstruction(unittest.TestCase):
     def test_net_construction(self):
-        net_without_tabs = extensible_splines.splines.TablessNet(PATH_TAG, 10)
+        net_without_tabs = extensible_splines.splines.TablessNet(PATH_TAG, 20)
         text_lines = RAW_POLYGON.split(" L ")
         self.assertEqual(text_lines[0], text_lines[-1], msg="Path Not Closed. Over a closed path we assume first and last points are the same.")
         #  each 'L' represents a line segment.  This is basically a Dagwood sandwich.
