@@ -128,10 +128,17 @@ def get_sample_points(number_of_points:int):
     return [m/float(number_of_points) for m in range(1, number_of_points)]
 
 def correct_sample_ends(raw_points:List[float], is_final:bool=False):
-    raw_points.insert(0,0.0)
+    """Return a copy of ``raw_points`` with 0 prepended and 1 appended if final.
+
+    The previous implementation mutated ``raw_points`` in-place which caused
+    successive calls with the same list to accumulate extra leading zeros (and
+    trailing ones).  ``get_all_points_all_segments`` reused the same list for
+    every segment, so later segments contained duplicated samples.  By creating
+    a new list, each segment receives a clean set of samples."""
+    new_points = [0.0] + list(raw_points)
     if is_final:
-        raw_points.append(1.0)
-    return raw_points
+        new_points.append(1.0)
+    return new_points
 
 # Interpolant and Centroid classes
 
